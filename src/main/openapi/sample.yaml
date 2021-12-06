@@ -1,0 +1,93 @@
+openapi: "3.0.3"
+info:
+  title: Sample API Definition with GET and POST
+  version: "1.0"
+
+servers:
+  - url: /v1
+  - url: https://api.server.test/v1
+
+paths:
+  /test:
+    get:
+      summary: a sample GET request with input passed as parameters
+      operationId: testParametersVerification
+      parameters:
+        - in: query
+          name: id
+          required: true
+          schema:
+            $ref: '#/components/schemas/Id'
+          description: Object ID as query parameter
+        - in: query
+          name: name
+          required: true
+          schema:
+            $ref: '#/components/schemas/Name'
+        - in: query
+          name: age
+          required: true
+          schema:
+            $ref: '#/components/schemas/Age'
+        - in: query
+          name: description
+          required: false
+          schema:
+            $ref: '#/components/schemas/Description'
+      responses:
+        '204':
+          description: OK
+
+    post:
+      summary: a sample POST request with a mandatory Request Body
+      operationId: testBodyVerification
+      requestBody:
+        description: sample POST request body
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TestRequestBody'
+
+      responses:
+        '204':
+          description: OK
+
+components:
+  schemas:
+    Id:
+      type: string
+      format: uuid
+      description: Object ID
+
+    Name:
+      type: string
+      description: Object Name
+      minLength: 10
+
+    Age:
+      type: integer
+      description: Object Age
+      minimum: 1
+      maximum: 99
+
+    Description:
+      type: string
+      description: a lengthy Object Description
+      minLength: 20
+
+    TestRequestBody:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        name:
+          $ref: '#/components/schemas/Name'
+        age:
+          $ref: '#/components/schemas/Age'
+        description:
+          $ref: '#/components/schemas/Description'
+      required:
+        - id
+        - name
+        - age

@@ -1,0 +1,19 @@
+title: "Sample API with POST"
+apiFirst: false
+developerEmail: morozov@gmail.com
+groupId: org.example
+basePackage: org.example
+apiPackage: org.example.api
+invokerPackage: org.example.api
+modelPackage: org.example.model
+configPackage: org.example.configuration
+dateLibrary: java8
+library: spring-boot
+reactive: false
+interfaceOnly: false
+legacyDiscriminatorBehavior: false
+oas3: true
+performBeanValidation: true
+useBeanValidation: true
+skipDefaultInterface: true
+useTags: false
