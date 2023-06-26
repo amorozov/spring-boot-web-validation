@@ -1,4 +1,4 @@
-package org.example.configuration;
+package org.sample.webflux.configuration;
 
 import com.fasterxml.jackson.databind.Module;
 import org.openapitools.jackson.nullable.JsonNullableModule;

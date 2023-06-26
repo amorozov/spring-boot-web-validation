@@ -1,26 +1,24 @@
-package org.example.controller;
+package org.sample.webflux.controller;
 
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
-import org.example.component.YAMLMapperFactory;
+import jakarta.validation.constraints.NotNull;
+import org.sample.webflux.component.YAMLMapperFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
-
 
 /**
  * Home redirection to OpenAPI api documentation
  */
 @Controller
-public class SwaggerUIWebMvcController {
+public class SwaggerUIWebFluxController {
 
     private final @NotNull YAMLMapper yamlMapper;
 
@@ -28,7 +26,7 @@ public class SwaggerUIWebMvcController {
     private Resource openapi;
 
 
-    public SwaggerUIWebMvcController(
+    public SwaggerUIWebFluxController(
             @NotNull YAMLMapperFactory theFactory
     ) {
         this.yamlMapper = theFactory.getYAMLMapper();
@@ -44,11 +42,6 @@ public class SwaggerUIWebMvcController {
     @ResponseBody
     public Object openapiJson() throws IOException {
         return yamlMapper.readValue(openapiContent(), Object.class);
-    }
-
-    @RequestMapping("/")
-    public String index() {
-        return "redirect:webjars/swagger-ui/index.html?url=../../openapi.json";
     }
 
     private @NotNull String openapiContent() throws IOException {
