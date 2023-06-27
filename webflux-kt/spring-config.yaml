@@ -1,0 +1,20 @@
+title: "Sample API with POST (reactive)"
+apiFirst: false
+developerEmail: morozov@gmail.com
+groupId: org.sample.webflux
+basePackage: org.sample.webflux
+apiPackage: org.sample.webflux.api
+invokerPackage: org.sample.webflux.api
+modelPackage: org.sample.webflux.model
+configPackage: org.sample.webflux.configuration
+useSpringBoot3: true
+dateLibrary: java8
+library: spring-boot
+reactive: true
+interfaceOnly: true
+legacyDiscriminatorBehavior: false
+oas3: true
+performBeanValidation: true
+useBeanValidation: true
+skipDefaultInterface: true
+useTags: false

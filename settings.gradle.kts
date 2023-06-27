@@ -1,2 +1,2 @@
 rootProject.name = "request-validation"
-include("webflux", "webmvc")
+include("webflux", "webmvc", "webflux-kt")
