@@ -6,7 +6,7 @@ spring:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false
 
-#springdoc:
-#  swagger-ui:
-#    url: ../openapi.json
-#    disable-swagger-default-url: true
+springdoc:
+  swagger-ui:
+    url: ../openapi.json
+    disable-swagger-default-url: true

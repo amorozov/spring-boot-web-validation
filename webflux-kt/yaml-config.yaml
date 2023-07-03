@@ -1,0 +1,5 @@
+title: "Sample API with POST (reactive)"
+apiFirst: true
+developerEmail: morozov@gmail.com
+legacyDiscriminatorBehavior: false
+outputFile: src/main/resources/openapi.yaml

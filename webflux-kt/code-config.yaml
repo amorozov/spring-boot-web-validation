@@ -1,5 +1,5 @@
 title: "Sample API with POST (reactive)"
-apiFirst: false
+apiFirst: true
 developerEmail: morozov@gmail.com
 groupId: org.sample.webflux
 basePackage: org.sample.webflux
@@ -12,6 +12,9 @@ dateLibrary: java8
 library: spring-boot
 reactive: true
 interfaceOnly: true
+delegatePattern: false
+serviceInterface: false
+serviceImplementation: false
 legacyDiscriminatorBehavior: false
 oas3: true
 performBeanValidation: true

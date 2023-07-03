@@ -40,52 +40,67 @@ dependencies {
 
 }
 
-val generatedProjectDir = "${buildDir}/generated-sources/sample"
+tasks {
+    val generatedProjectDir = "${buildDir}/generated-sources/service"
+    val openApiYaml = "${rootDir}/src/main/openapi/sample.yaml"
 
-val generateTask = tasks.named<GenerateTask>("openApiGenerate") {
+    val yamlGenerateTask = create<GenerateTask>("openApiYamlGenerate") {
+        val generatorConfig = "${projectDir}/yaml-config.yaml"
 
-    generatorName.set("kotlin-spring")
-    outputDir.set(generatedProjectDir)
-    inputSpec.set("${rootDir}/src/main/openapi/sample.yaml")
-    configFile.set("${projectDir}/spring-config.yaml")
-    inputs.file("${projectDir}/spring-config.yaml")
-    doFirst {
-        delete(generatedProjectDir)
-    }
-    doLast {
-        delete("${generatedProjectDir}/src/main/kotlin/org/sample/webflux/api/ApiUtil.kt")
-        delete("${generatedProjectDir}/src/main/resources/application.properties")
-    }
-}
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        jvmTarget = "17"
-        freeCompilerArgs += "-Xjsr305=strict"
-    }
-}
-
-sourceSets {
-    main {
-        kotlin {
-            srcDirs("${generatedProjectDir}/src/main/kotlin")
+        generatorName.set("openapi-yaml")
+        outputDir.set(generatedProjectDir)
+        doFirst {
+            delete(generatedProjectDir)
         }
-        resources {
-            srcDirs("${generatedProjectDir}/src/main/resources")
+
+        inputSpec.set(openApiYaml)
+        configFile.set(generatorConfig)
+        inputs.file(generatorConfig)
+    }
+
+    val codeGenerateTask = named<GenerateTask>("openApiGenerate") {
+        dependsOn(yamlGenerateTask)
+
+        val generatorConfig = "${projectDir}/code-config.yaml"
+        generatorName.set("kotlin-spring")
+        outputDir.set(generatedProjectDir)
+        inputSpec.set(openApiYaml)
+        configFile.set(generatorConfig)
+        inputs.file(generatorConfig)
+
+        doLast {
+            delete("${generatedProjectDir}/src/main/kotlin/org/sample/webflux/api/ApiUtil.kt")
         }
     }
-}
 
-tasks.named<Jar>("kotlinSourcesJar") {
-    dependsOn(generateTask)
-}
+    withType<KotlinCompile> {
+        kotlinOptions {
+            jvmTarget = "17"
+            freeCompilerArgs += "-Xjsr305=strict"
+        }
+    }
 
-tasks.named<KotlinCompile>("compileKotlin") {
-    dependsOn(generateTask)
-}
+    sourceSets {
+        main {
+            kotlin {
+                srcDirs("${generatedProjectDir}/src/main/kotlin")
+            }
+            resources {
+                srcDirs("${generatedProjectDir}/src/main/resources")
+            }
+        }
+    }
 
+    named<Jar>("kotlinSourcesJar") {
+        dependsOn(codeGenerateTask)
+    }
 
+    named<KotlinCompile>("compileKotlin") {
+        dependsOn(codeGenerateTask)
+    }
 
-tasks.named<ProcessResources>("processResources") {
-    dependsOn(generateTask)
+    named<ProcessResources>("processResources") {
+        dependsOn(codeGenerateTask)
+    }
+
 }
